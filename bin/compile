@@ -4,17 +4,19 @@ indent() {
   sed -u 's/^/       /'
 }
 
-echo "-----> Install avconv"
+echo "-----> Install "
 BUILD_DIR=$1
 VENDOR_DIR="vendor"
-BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
+DOWNLOAD_URL="https://www.johnvansickle.com/libav/releases/libav-release-64bit-static.tar.xz"
+
+echo "DOWNLOAD_URL = " $DOWNLOAD_URL | indent
 
 cd $BUILD_DIR
 mkdir -p $VENDOR_DIR
 cd $VENDOR_DIR
 mkdir -p avconv
 cd avconv
-cp ${BP_DIR}/vendor/* .
+curl -L --silent $DOWNLOAD_URL | tar xJ --strip-components=1
 
 echo "exporting PATH" | indent
 PROFILE_PATH="$BUILD_DIR/.profile.d/avconv.sh"
